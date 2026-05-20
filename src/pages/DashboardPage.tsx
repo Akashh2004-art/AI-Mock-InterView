@@ -33,8 +33,8 @@ export default function DashboardPage() {
   const fetchDashboardData = async () => {
     try {
       const [statsRes, recentRes] = await Promise.all([
-        fetch(`http://localhost:3000/api/interviews/user/${user!.id}/stats`),
-        fetch(`http://localhost:3000/api/interviews/user/${user!.id}/recent`),
+        fetch(`${import.meta.env.VITE_API_URL}/api/interviews/user/${user!.id}/stats`),
+        fetch(`${import.meta.env.VITE_API_URL}/api/interviews/user/${user!.id}/recent`),
       ])
       const statsData = await statsRes.json()
       const recentData = await recentRes.json()

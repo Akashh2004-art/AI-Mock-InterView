@@ -25,7 +25,7 @@ export default function InsightsPage() {
 
     const fetchInsights = async () => {
         try {
-            const res = await fetch(`http://localhost:3000/api/interviews/user/${user!.id}/insights`)
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/interviews/user/${user!.id}/insights`)
             const data = await res.json()
             setInsights(data)
         } catch (err) {

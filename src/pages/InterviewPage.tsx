@@ -51,7 +51,7 @@ export default function InterviewPage() {
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const res = await fetch(`http://localhost:3000/api/interviews/${id}/questions`)
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/interviews/${id}/questions`)
         const data = await res.json()
         setQuestions(data)
         questionsRef.current = data
@@ -82,7 +82,7 @@ export default function InterviewPage() {
             if (currentAnswer.trim()) {
               const durationSec = 60
               try {
-                await fetch("http://localhost:3000/api/answers", {
+                await fetch(`${import.meta.env.VITE_API_URL}/api/answers`, {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify({
@@ -178,13 +178,13 @@ export default function InterviewPage() {
 
   const generateFeedbackForInterview = async (interviewId: string) => {
     try {
-      const rawAnswersRes = await fetch(`http://localhost:3000/api/answers/interview/${interviewId}`)
+      const rawAnswersRes = await fetch(`${import.meta.env.VITE_API_URL}/api/answers/interview/${interviewId}`)
       const rawAnswers = await rawAnswersRes.json()
 
       for (const ans of rawAnswers) {
         if (!ans.answerText) continue
         try {
-          await fetch("http://localhost:3000/api/feedback", {
+          await fetch(`${import.meta.env.VITE_API_URL}/api/feedback`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -207,7 +207,7 @@ export default function InterviewPage() {
     if (!answerText.trim()) return
     const durationSec = Math.round((Date.now() - startTime) / 1000)
     try {
-      await fetch("http://localhost:3000/api/answers", {
+      await fetch(`${import.meta.env.VITE_API_URL}/api/answers`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

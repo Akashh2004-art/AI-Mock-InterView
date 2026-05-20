@@ -66,15 +66,15 @@ export default function NewInterviewPage() {
       formData.append("type", interviewType)
       formData.append("questionCount", questionCount.toString())
 
-      let url = "http://localhost:3000/api/generate"
+      let url = `${import.meta.env.VITE_API_URL}/api/generate`
 
       if (activeTab === "normal") {
         formData.append("role", jobRole)
         if (resumeFile) formData.append("resume", resumeFile)
-        url = "http://localhost:3000/api/generate"
+        url = `${import.meta.env.VITE_API_URL}/api/generate`
       } else {
         formData.append("resume", resumeFile!)
-        url = "http://localhost:3000/api/generate/resume"
+        url = `${import.meta.env.VITE_API_URL}/api/generate/resume`
       }
 
       const response = await fetch(url, { method: "POST", body: formData })

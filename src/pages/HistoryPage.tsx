@@ -27,8 +27,8 @@ export default function HistoryPage() {
     const fetchHistory = async () => {
         try {
             const [interviewsRes, recentRes] = await Promise.all([
-                fetch(`http://localhost:3000/api/interviews/user/${user!.id}`),
-                fetch(`http://localhost:3000/api/interviews/user/${user!.id}/recent`),
+                fetch(`${import.meta.env.VITE_API_URL}/api/interviews/user/${user!.id}`),
+                fetch(`${import.meta.env.VITE_API_URL}/api/interviews/user/${user!.id}/recent`),
             ])
             const allInterviews: Interview[] = await interviewsRes.json()
             const recentWithScores: Interview[] = await recentRes.json()

@@ -62,7 +62,7 @@ export default function FeedbackPage() {
   const initFeedback = async () => {
     try {
       setLoading(true)
-      const res = await fetch(`http://localhost:3000/api/feedback/interview/${id}`)
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/feedback/interview/${id}`)
       const data: FeedbackItem[] = await res.json()
       setFeedbackData(data)
     } catch (err) {
