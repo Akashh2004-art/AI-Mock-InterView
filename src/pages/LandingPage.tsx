@@ -1,8 +1,8 @@
-import { useState } from "react"
-import { useAuth, SignInButton, SignUpButton, UserButton } from "@clerk/react"
-import { useNavigate } from "react-router-dom"
-import { motion, Variants } from "framer-motion"
-import { GlowingEffect } from "@/components/ui/glowing-effect"
+import { useState, useEffect } from "react";
+import { useAuth, SignInButton, SignUpButton, UserButton } from "@clerk/react";
+import { useNavigate } from "react-router-dom";
+import { motion, Variants } from "framer-motion";
+import { GlowingEffect } from "@/components/ui/glowing-effect";
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 28 },
@@ -11,7 +11,7 @@ const fadeUp: Variants = {
     y: 0,
     transition: { duration: 0.55, delay: i * 0.12 },
   }),
-}
+};
 
 const fadeIn: Variants = {
   hidden: { opacity: 0 },
@@ -19,13 +19,16 @@ const fadeIn: Variants = {
     opacity: 1,
     transition: { duration: 0.5, delay: i * 0.1 },
   }),
-}
+};
 
 export default function LandingPage() {
-  const { isSignedIn } = useAuth()
-  const navigate = useNavigate()
-  const [modal, setModal] = useState<"privacy" | "terms" | null>(null)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const { isSignedIn } = useAuth();
+  const navigate = useNavigate();
+  const [modal, setModal] = useState<"privacy" | "terms" | null>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  useEffect(() => {
+    if (isSignedIn) navigate("/dashboard");
+  }, [isSignedIn]);
 
   const features = [
     {
@@ -82,17 +85,37 @@ export default function LandingPage() {
       title: "AI Insights Coach",
       desc: "Get personalized coaching tips from Groq AI — strong areas, weak spots, and actionable advice.",
     },
-  ]
+  ];
 
   const steps = [
-    { step: "01", icon: "upload_file", color: "text-blue-400", bg: "bg-blue-500/10", title: "Upload Resume", desc: "Our AI analyzes your experience to create personalized questions for your target role." },
-    { step: "02", icon: "mic", color: "text-purple-400", bg: "bg-purple-500/10", title: "Start Interview", desc: "Engage in a realistic mock interview with our AI coach. Answer by voice or text." },
-    { step: "03", icon: "insights", color: "text-emerald-400", bg: "bg-emerald-500/10", title: "Get Feedback", desc: "Receive a full report with scores, AI feedback, and areas for growth." },
-  ]
+    {
+      step: "01",
+      icon: "upload_file",
+      color: "text-blue-400",
+      bg: "bg-blue-500/10",
+      title: "Upload Resume",
+      desc: "Our AI analyzes your experience to create personalized questions for your target role.",
+    },
+    {
+      step: "02",
+      icon: "mic",
+      color: "text-purple-400",
+      bg: "bg-purple-500/10",
+      title: "Start Interview",
+      desc: "Engage in a realistic mock interview with our AI coach. Answer by voice or text.",
+    },
+    {
+      step: "03",
+      icon: "insights",
+      color: "text-emerald-400",
+      bg: "bg-emerald-500/10",
+      title: "Get Feedback",
+      desc: "Receive a full report with scores, AI feedback, and areas for growth.",
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-[#080b12] text-white antialiased overflow-x-hidden">
-
       {/* Ambient background blobs */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
         <div className="absolute top-[-10%] left-[-5%] w-150 h-150 bg-blue-600/8 rounded-full blur-[140px]" />
@@ -105,7 +128,9 @@ export default function LandingPage() {
         <div className="flex justify-between items-center px-4 md:px-8 py-4 max-w-7xl mx-auto">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-blue-500/15 border border-blue-500/30 flex items-center justify-center">
-              <span className="material-symbols-outlined text-blue-400 text-lg">psychology</span>
+              <span className="material-symbols-outlined text-blue-400 text-lg">
+                psychology
+              </span>
             </div>
             <span
               onClick={() => navigate("/")}
@@ -118,8 +143,18 @@ export default function LandingPage() {
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-8">
-            <a href="#features" className="text-slate-400 hover:text-white transition-colors text-sm font-medium">Features</a>
-            <a href="#how-it-works" className="text-slate-400 hover:text-white transition-colors text-sm font-medium">How It Works</a>
+            <a
+              href="#features"
+              className="text-slate-400 hover:text-white transition-colors text-sm font-medium"
+            >
+              Features
+            </a>
+            <a
+              href="#how-it-works"
+              className="text-slate-400 hover:text-white transition-colors text-sm font-medium"
+            >
+              How It Works
+            </a>
           </nav>
 
           <div className="hidden md:flex items-center gap-3">
@@ -154,7 +189,9 @@ export default function LandingPage() {
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="md:hidden p-2 rounded-lg hover:bg-slate-800 transition-colors"
           >
-            <span className="material-symbols-outlined text-slate-400">{mobileMenuOpen ? "close" : "menu"}</span>
+            <span className="material-symbols-outlined text-slate-400">
+              {mobileMenuOpen ? "close" : "menu"}
+            </span>
           </button>
         </div>
 
@@ -165,16 +202,39 @@ export default function LandingPage() {
             animate={{ opacity: 1, y: 0 }}
             className="md:hidden border-t border-slate-800/60 bg-[#0d1018] px-4 py-4 flex flex-col gap-3"
           >
-            <a href="#features" onClick={() => setMobileMenuOpen(false)} className="text-slate-300 py-2 text-sm font-medium">Features</a>
-            <a href="#how-it-works" onClick={() => setMobileMenuOpen(false)} className="text-slate-300 py-2 text-sm font-medium">How It Works</a>
+            <a
+              href="#features"
+              onClick={() => setMobileMenuOpen(false)}
+              className="text-slate-300 py-2 text-sm font-medium"
+            >
+              Features
+            </a>
+            <a
+              href="#how-it-works"
+              onClick={() => setMobileMenuOpen(false)}
+              className="text-slate-300 py-2 text-sm font-medium"
+            >
+              How It Works
+            </a>
             <div className="border-t border-slate-800 pt-3 flex flex-col gap-2">
               {isSignedIn ? (
-                <button onClick={() => navigate("/dashboard")} className="text-left text-blue-400 font-semibold py-2 text-sm">Go to Dashboard →</button>
+                <button
+                  onClick={() => navigate("/dashboard")}
+                  className="text-left text-blue-400 font-semibold py-2 text-sm"
+                >
+                  Go to Dashboard →
+                </button>
               ) : (
                 <>
-                  <SignInButton><button className="text-left text-slate-300 py-2 text-sm font-medium">Sign In</button></SignInButton>
+                  <SignInButton>
+                    <button className="text-left text-slate-300 py-2 text-sm font-medium">
+                      Sign In
+                    </button>
+                  </SignInButton>
                   <SignUpButton>
-                    <button className="w-full bg-blue-600 text-white py-3 rounded-xl font-semibold text-sm">Get Started Free</button>
+                    <button className="w-full bg-blue-600 text-white py-3 rounded-xl font-semibold text-sm">
+                      Get Started Free
+                    </button>
                   </SignUpButton>
                 </>
               )}
@@ -184,25 +244,29 @@ export default function LandingPage() {
       </header>
 
       <main className="relative z-10 pt-28 pb-20">
-
         {/* ─── Hero Section ─── */}
         <section className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-
           {/* Left: Text */}
           <div className="space-y-7">
             <motion.div
-              variants={fadeUp} initial="hidden" animate="visible" custom={0}
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+              custom={0}
               className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-blue-500/25 bg-blue-500/8 text-blue-400 text-xs font-semibold"
             >
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-400"></span>
               </span>
-              POWERED BY GROQ AI 
+              POWERED BY GROQ AI
             </motion.div>
 
             <motion.h1
-              variants={fadeUp} initial="hidden" animate="visible" custom={1}
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+              custom={1}
               className="text-4xl sm:text-5xl md:text-6xl font-bold leading-[1.1] tracking-tight"
               style={{ fontFamily: "Space Grotesk" }}
             >
@@ -214,14 +278,21 @@ export default function LandingPage() {
             </motion.h1>
 
             <motion.p
-              variants={fadeUp} initial="hidden" animate="visible" custom={2}
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+              custom={2}
               className="text-base md:text-lg text-slate-400 max-w-lg leading-relaxed"
             >
-              Practice with AI-generated questions, get instant feedback, and track your progress through immersive voice-first mock interviews.
+              Practice with AI-generated questions, get instant feedback, and
+              track your progress through immersive voice-first mock interviews.
             </motion.p>
 
             <motion.div
-              variants={fadeUp} initial="hidden" animate="visible" custom={3}
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+              custom={3}
               className="flex flex-wrap gap-3 pt-2"
             >
               {isSignedIn ? (
@@ -250,7 +321,10 @@ export default function LandingPage() {
 
           {/* Right: Mockup Card */}
           <motion.div
-            variants={fadeIn} initial="hidden" animate="visible" custom={2}
+            variants={fadeIn}
+            initial="hidden"
+            animate="visible"
+            custom={2}
             className="relative"
           >
             {/* Glow behind card */}
@@ -262,33 +336,47 @@ export default function LandingPage() {
               <div className="flex items-center justify-between mb-5">
                 <div className="flex items-center gap-3">
                   <div className="w-9 h-9 rounded-full bg-linear-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                    <span className="material-symbols-outlined text-white text-base">smart_toy</span>
+                    <span className="material-symbols-outlined text-white text-base">
+                      smart_toy
+                    </span>
                   </div>
                   <div>
-                    <p className="text-white font-semibold text-sm">AI Interviewer</p>
+                    <p className="text-white font-semibold text-sm">
+                      AI Interviewer
+                    </p>
                     <div className="flex items-center gap-1.5">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                      <p className="text-[11px] text-slate-400">Senior Product Manager</p>
+                      <p className="text-[11px] text-slate-400">
+                        Senior Product Manager
+                      </p>
                     </div>
                   </div>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <div className="px-2 py-0.5 rounded-full bg-orange-500/15 border border-orange-500/25 text-orange-400 text-[10px] font-semibold">Question 3/5</div>
+                  <div className="px-2 py-0.5 rounded-full bg-orange-500/15 border border-orange-500/25 text-orange-400 text-[10px] font-semibold">
+                    Question 3/5
+                  </div>
                 </div>
               </div>
 
               {/* Question */}
               <div className="bg-[#161b27] rounded-xl p-4 border border-slate-700/30 mb-5">
                 <p className="text-slate-200 text-sm leading-relaxed">
-                  "Can you describe a time when you had to manage a conflict within your team? How did you approach it and what was the outcome?"
+                  "Can you describe a time when you had to manage a conflict
+                  within your team? How did you approach it and what was the
+                  outcome?"
                 </p>
               </div>
 
               {/* Timer bar */}
               <div className="mb-5">
                 <div className="flex justify-between items-center mb-1.5">
-                  <span className="text-[11px] text-slate-500 font-medium">Time remaining</span>
-                  <span className="text-[11px] text-orange-400 font-semibold">3:00</span>
+                  <span className="text-[11px] text-slate-500 font-medium">
+                    Time remaining
+                  </span>
+                  <span className="text-[11px] text-orange-400 font-semibold">
+                    3:00
+                  </span>
                 </div>
                 <div className="h-1 bg-slate-700/60 rounded-full overflow-hidden">
                   <div className="h-full w-[70%] rounded-full bg-linear-to-r from-orange-500 to-orange-400"></div>
@@ -298,31 +386,37 @@ export default function LandingPage() {
               {/* Waveform */}
               <div className="flex flex-col items-center gap-4">
                 <div className="flex items-end gap-1 h-10">
-                  {[40, 65, 85, 55, 90, 70, 45, 80, 60, 75, 50, 88, 65, 42].map((h, i) => (
-                    <div
-                      key={i}
-                      className="w-1 rounded-full bg-blue-400"
-                      style={{
-                        height: `${h}%`,
-                        opacity: 0.4 + (i % 3) * 0.2,
-                        animation: `pulse ${0.8 + (i % 3) * 0.3}s ease-in-out infinite alternate`,
-                        animationDelay: `${i * 0.07}s`,
-                      }}
-                    />
-                  ))}
+                  {[40, 65, 85, 55, 90, 70, 45, 80, 60, 75, 50, 88, 65, 42].map(
+                    (h, i) => (
+                      <div
+                        key={i}
+                        className="w-1 rounded-full bg-blue-400"
+                        style={{
+                          height: `${h}%`,
+                          opacity: 0.4 + (i % 3) * 0.2,
+                          animation: `pulse ${0.8 + (i % 3) * 0.3}s ease-in-out infinite alternate`,
+                          animationDelay: `${i * 0.07}s`,
+                        }}
+                      />
+                    ),
+                  )}
                 </div>
                 <div className="flex items-center gap-3 w-full">
                   <button className="flex-1 py-2.5 rounded-xl border border-slate-700 text-slate-400 text-xs font-semibold hover:bg-slate-800 transition-colors">
                     Type Instead
                   </button>
                   <button className="w-14 h-14 rounded-full bg-blue-600 flex items-center justify-center shadow-[0_0_25px_rgba(59,130,246,0.4)] hover:bg-blue-500 transition-all">
-                    <span className="material-symbols-outlined text-white text-2xl">mic</span>
+                    <span className="material-symbols-outlined text-white text-2xl">
+                      mic
+                    </span>
                   </button>
                   <button className="flex-1 py-2.5 rounded-xl border border-slate-700 text-slate-400 text-xs font-semibold hover:bg-slate-800 transition-colors">
                     Skip
                   </button>
                 </div>
-                <p className="text-[11px] font-semibold text-blue-400 uppercase tracking-widest">● Listening...</p>
+                <p className="text-[11px] font-semibold text-blue-400 uppercase tracking-widest">
+                  ● Listening...
+                </p>
               </div>
             </div>
           </motion.div>
@@ -331,16 +425,24 @@ export default function LandingPage() {
         {/* ─── Features Section ─── */}
         <section id="features" className="max-w-7xl mx-auto px-4 md:px-8 mt-28">
           <motion.div
-            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }} viewport={{ once: true }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
             className="text-center mb-14"
           >
-            <p className="text-xs font-semibold text-blue-400 uppercase tracking-widest mb-3">Everything You Need</p>
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4" style={{ fontFamily: "Space Grotesk" }}>
+            <p className="text-xs font-semibold text-blue-400 uppercase tracking-widest mb-3">
+              Everything You Need
+            </p>
+            <h2
+              className="text-3xl md:text-4xl font-bold text-white mb-4"
+              style={{ fontFamily: "Space Grotesk" }}
+            >
               Built to get you hired
             </h2>
             <p className="text-slate-400 max-w-2xl mx-auto text-sm md:text-base">
-              Our comprehensive AI suite provides personalized coaching for every stage of your interview journey.
+              Our comprehensive AI suite provides personalized coaching for
+              every stage of your interview journey.
             </p>
           </motion.div>
 
@@ -348,30 +450,57 @@ export default function LandingPage() {
             {features.map((f, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.45, delay: i * 0.08 }} viewport={{ once: true }}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.45, delay: i * 0.08 }}
+                viewport={{ once: true }}
                 className={`relative p-6 rounded-2xl border ${f.borderColor} bg-[#0d1018] overflow-hidden group cursor-default transition-all duration-300 ${f.glowClass}`}
               >
                 <GlowingEffect />
-                <div className={`w-12 h-12 rounded-xl ${f.bgColor} flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300`}>
-                  <span className={`material-symbols-outlined ${f.iconColor} text-2xl`}>{f.icon}</span>
+                <div
+                  className={`w-12 h-12 rounded-xl ${f.bgColor} flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300`}
+                >
+                  <span
+                    className={`material-symbols-outlined ${f.iconColor} text-2xl`}
+                  >
+                    {f.icon}
+                  </span>
                 </div>
-                <h3 className="text-base font-semibold text-white mb-2" style={{ fontFamily: "Space Grotesk" }}>{f.title}</h3>
-                <p className="text-slate-400 text-sm leading-relaxed">{f.desc}</p>
+                <h3
+                  className="text-base font-semibold text-white mb-2"
+                  style={{ fontFamily: "Space Grotesk" }}
+                >
+                  {f.title}
+                </h3>
+                <p className="text-slate-400 text-sm leading-relaxed">
+                  {f.desc}
+                </p>
               </motion.div>
             ))}
           </div>
         </section>
 
         {/* ─── How It Works ─── */}
-        <section id="how-it-works" className="max-w-7xl mx-auto px-4 md:px-8 mt-28">
+        <section
+          id="how-it-works"
+          className="max-w-7xl mx-auto px-4 md:px-8 mt-28"
+        >
           <motion.div
-            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }} viewport={{ once: true }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
             className="text-center mb-14"
           >
-            <p className="text-xs font-semibold text-purple-400 uppercase tracking-widest mb-3">Simple Process</p>
-            <h2 className="text-3xl md:text-4xl font-bold text-white" style={{ fontFamily: "Space Grotesk" }}>How It Works</h2>
+            <p className="text-xs font-semibold text-purple-400 uppercase tracking-widest mb-3">
+              Simple Process
+            </p>
+            <h2
+              className="text-3xl md:text-4xl font-bold text-white"
+              style={{ fontFamily: "Space Grotesk" }}
+            >
+              How It Works
+            </h2>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
@@ -381,18 +510,35 @@ export default function LandingPage() {
             {steps.map((s, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.45, delay: i * 0.1 }} viewport={{ once: true }}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.45, delay: i * 0.1 }}
+                viewport={{ once: true }}
                 className="relative text-center z-10"
               >
-                <div className={`w-16 h-16 rounded-2xl ${s.bg} border border-slate-700/50 mx-auto flex items-center justify-center mb-5 relative`}>
-                  <span className={`material-symbols-outlined ${s.color} text-2xl`}>{s.icon}</span>
+                <div
+                  className={`w-16 h-16 rounded-2xl ${s.bg} border border-slate-700/50 mx-auto flex items-center justify-center mb-5 relative`}
+                >
+                  <span
+                    className={`material-symbols-outlined ${s.color} text-2xl`}
+                  >
+                    {s.icon}
+                  </span>
                   <div className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-[#0d1018] border border-slate-700 flex items-center justify-center">
-                    <span className="text-[9px] text-slate-400 font-bold">{s.step}</span>
+                    <span className="text-[9px] text-slate-400 font-bold">
+                      {s.step}
+                    </span>
                   </div>
                 </div>
-                <h4 className="text-base font-semibold text-white mb-2" style={{ fontFamily: "Space Grotesk" }}>{s.title}</h4>
-                <p className="text-slate-400 text-sm leading-relaxed max-w-55 mx-auto">{s.desc}</p>
+                <h4
+                  className="text-base font-semibold text-white mb-2"
+                  style={{ fontFamily: "Space Grotesk" }}
+                >
+                  {s.title}
+                </h4>
+                <p className="text-slate-400 text-sm leading-relaxed max-w-55 mx-auto">
+                  {s.desc}
+                </p>
               </motion.div>
             ))}
           </div>
@@ -402,8 +548,10 @@ export default function LandingPage() {
 
         {/* ─── CTA Section ─── */}
         <motion.section
-          initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }} viewport={{ once: true }}
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
           className="max-w-5xl mx-auto px-4 md:px-8 mt-20"
         >
           <div className="rounded-3xl p-8 md:p-14 text-center border border-blue-500/20 relative overflow-hidden bg-[#0d1018]">
@@ -411,12 +559,18 @@ export default function LandingPage() {
             <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 blur-[80px] pointer-events-none" />
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/8 blur-[80px] pointer-events-none" />
 
-            <p className="text-xs font-semibold text-blue-400 uppercase tracking-widest mb-4 relative z-10">Start Today</p>
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-5 relative z-10" style={{ fontFamily: "Space Grotesk" }}>
+            <p className="text-xs font-semibold text-blue-400 uppercase tracking-widest mb-4 relative z-10">
+              Start Today
+            </p>
+            <h2
+              className="text-3xl md:text-4xl font-bold text-white mb-5 relative z-10"
+              style={{ fontFamily: "Space Grotesk" }}
+            >
               Ready to land your dream job?
             </h2>
             <p className="text-slate-400 mb-8 max-w-xl mx-auto text-sm md:text-base relative z-10 leading-relaxed">
-              Join thousands of candidates who improved their interview skills and secured offers at top companies — completely free.
+              Join thousands of candidates who improved their interview skills
+              and secured offers at top companies — completely free.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-3 relative z-10">
               {isSignedIn ? (
@@ -441,7 +595,6 @@ export default function LandingPage() {
             </div>
           </div>
         </motion.section>
-
       </main>
 
       {/* ─── Footer ─── */}
@@ -449,24 +602,54 @@ export default function LandingPage() {
         <div className="flex flex-col md:flex-row justify-between items-center gap-6 px-6 md:px-8 py-10 max-w-7xl mx-auto">
           <div className="flex items-center gap-2.5">
             <div className="w-7 h-7 rounded-lg bg-blue-500/15 border border-blue-500/25 flex items-center justify-center">
-              <span className="material-symbols-outlined text-blue-400 text-base">psychology</span>
+              <span className="material-symbols-outlined text-blue-400 text-base">
+                psychology
+              </span>
             </div>
-            <span className="text-base font-bold text-white" style={{ fontFamily: "Space Grotesk" }}>InterviewAI</span>
+            <span
+              className="text-base font-bold text-white"
+              style={{ fontFamily: "Space Grotesk" }}
+            >
+              InterviewAI
+            </span>
           </div>
           <div className="flex gap-6">
-            <a href="#features" className="text-slate-500 hover:text-slate-300 transition-colors text-sm">Features</a>
-            <a href="#how-it-works" className="text-slate-500 hover:text-slate-300 transition-colors text-sm">How It Works</a>
-            <button onClick={() => setModal("privacy")} className="text-slate-500 hover:text-slate-300 transition-colors text-sm">Privacy</button>
-            <button onClick={() => setModal("terms")} className="text-slate-500 hover:text-slate-300 transition-colors text-sm">Terms</button>
+            <a
+              href="#features"
+              className="text-slate-500 hover:text-slate-300 transition-colors text-sm"
+            >
+              Features
+            </a>
+            <a
+              href="#how-it-works"
+              className="text-slate-500 hover:text-slate-300 transition-colors text-sm"
+            >
+              How It Works
+            </a>
+            <button
+              onClick={() => setModal("privacy")}
+              className="text-slate-500 hover:text-slate-300 transition-colors text-sm"
+            >
+              Privacy
+            </button>
+            <button
+              onClick={() => setModal("terms")}
+              className="text-slate-500 hover:text-slate-300 transition-colors text-sm"
+            >
+              Terms
+            </button>
           </div>
-          <p className="text-slate-600 text-xs">© 2026 InterviewAI. All rights reserved.</p>
+          <p className="text-slate-600 text-xs">
+            © 2026 InterviewAI. All rights reserved.
+          </p>
         </div>
       </footer>
 
       {/* ─── Modal ─── */}
       {modal && (
         <motion.div
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-4"
           onClick={() => setModal(null)}
         >
@@ -481,23 +664,49 @@ export default function LandingPage() {
               onClick={() => setModal(null)}
               className="absolute top-4 right-4 w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center transition-colors"
             >
-              <span className="material-symbols-outlined text-slate-400 text-base">close</span>
+              <span className="material-symbols-outlined text-slate-400 text-base">
+                close
+              </span>
             </button>
 
             {modal === "privacy" && (
               <>
-                <h2 className="text-xl font-bold text-white mb-5" style={{ fontFamily: "Space Grotesk" }}>Privacy Policy</h2>
+                <h2
+                  className="text-xl font-bold text-white mb-5"
+                  style={{ fontFamily: "Space Grotesk" }}
+                >
+                  Privacy Policy
+                </h2>
                 <div className="flex flex-col gap-4 text-slate-400 text-sm leading-relaxed">
-                  <p className="text-slate-500 text-xs">Last updated: May 2026</p>
+                  <p className="text-slate-500 text-xs">
+                    Last updated: May 2026
+                  </p>
                   {[
-                    { title: "Information We Collect", body: "We collect information you provide directly — including your name, email address, and resume content — when you create an account or use our services." },
-                    { title: "How We Use Your Information", body: "We use your information to generate personalized interview questions, provide AI feedback, and improve our services. Your resume data is processed securely and never shared with third parties." },
-                    { title: "Data Storage", body: "Your interview history, answers, and feedback are stored securely in our database. You can request deletion of your data at any time by contacting us." },
-                    { title: "Third-Party Services", body: "We use Groq AI for question generation and answer evaluation, Clerk for authentication, and Supabase for data storage. Each service has its own privacy policy." },
-                    { title: "Contact", body: "For privacy-related questions, contact us at privacy@interviewai.app" },
+                    {
+                      title: "Information We Collect",
+                      body: "We collect information you provide directly — including your name, email address, and resume content — when you create an account or use our services.",
+                    },
+                    {
+                      title: "How We Use Your Information",
+                      body: "We use your information to generate personalized interview questions, provide AI feedback, and improve our services. Your resume data is processed securely and never shared with third parties.",
+                    },
+                    {
+                      title: "Data Storage",
+                      body: "Your interview history, answers, and feedback are stored securely in our database. You can request deletion of your data at any time by contacting us.",
+                    },
+                    {
+                      title: "Third-Party Services",
+                      body: "We use Groq AI for question generation and answer evaluation, Clerk for authentication, and Supabase for data storage. Each service has its own privacy policy.",
+                    },
+                    {
+                      title: "Contact",
+                      body: "For privacy-related questions, contact us at privacy@interviewai.app",
+                    },
                   ].map((s, i) => (
                     <div key={i}>
-                      <h3 className="text-white font-semibold text-sm mb-1">{s.title}</h3>
+                      <h3 className="text-white font-semibold text-sm mb-1">
+                        {s.title}
+                      </h3>
                       <p>{s.body}</p>
                     </div>
                   ))}
@@ -507,19 +716,46 @@ export default function LandingPage() {
 
             {modal === "terms" && (
               <>
-                <h2 className="text-xl font-bold text-white mb-5" style={{ fontFamily: "Space Grotesk" }}>Terms of Service</h2>
+                <h2
+                  className="text-xl font-bold text-white mb-5"
+                  style={{ fontFamily: "Space Grotesk" }}
+                >
+                  Terms of Service
+                </h2>
                 <div className="flex flex-col gap-4 text-slate-400 text-sm leading-relaxed">
-                  <p className="text-slate-500 text-xs">Last updated: May 2026</p>
+                  <p className="text-slate-500 text-xs">
+                    Last updated: May 2026
+                  </p>
                   {[
-                    { title: "Acceptance of Terms", body: "By accessing or using InterviewAI, you agree to be bound by these Terms of Service. If you do not agree, please do not use our services." },
-                    { title: "Use of Service", body: "InterviewAI is intended for personal interview practice only. You may not use our platform for commercial purposes, resale, or any unlawful activity." },
-                    { title: "AI-Generated Content", body: "Interview questions and feedback are generated by AI and are for practice purposes only. They do not represent actual hiring decisions or guarantees of employment." },
-                    { title: "Account Responsibility", body: "You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account." },
-                    { title: "Limitation of Liability", body: 'InterviewAI is provided "as is" without warranties of any kind. We are not liable for any damages arising from your use of our services.' },
-                    { title: "Changes to Terms", body: "We reserve the right to modify these terms at any time. Continued use of the service constitutes acceptance of the updated terms." },
+                    {
+                      title: "Acceptance of Terms",
+                      body: "By accessing or using InterviewAI, you agree to be bound by these Terms of Service. If you do not agree, please do not use our services.",
+                    },
+                    {
+                      title: "Use of Service",
+                      body: "InterviewAI is intended for personal interview practice only. You may not use our platform for commercial purposes, resale, or any unlawful activity.",
+                    },
+                    {
+                      title: "AI-Generated Content",
+                      body: "Interview questions and feedback are generated by AI and are for practice purposes only. They do not represent actual hiring decisions or guarantees of employment.",
+                    },
+                    {
+                      title: "Account Responsibility",
+                      body: "You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account.",
+                    },
+                    {
+                      title: "Limitation of Liability",
+                      body: 'InterviewAI is provided "as is" without warranties of any kind. We are not liable for any damages arising from your use of our services.',
+                    },
+                    {
+                      title: "Changes to Terms",
+                      body: "We reserve the right to modify these terms at any time. Continued use of the service constitutes acceptance of the updated terms.",
+                    },
                   ].map((s, i) => (
                     <div key={i}>
-                      <h3 className="text-white font-semibold text-sm mb-1">{s.title}</h3>
+                      <h3 className="text-white font-semibold text-sm mb-1">
+                        {s.title}
+                      </h3>
                       <p>{s.body}</p>
                     </div>
                   ))}
@@ -529,7 +765,6 @@ export default function LandingPage() {
           </motion.div>
         </motion.div>
       )}
-
     </div>
-  )
+  );
 }
