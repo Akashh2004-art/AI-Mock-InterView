@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { useUser } from "@clerk/react"
+import { useUser, useAuth } from "@clerk/react"
 import { useNavigate } from "react-router-dom"
 import { GlowingEffect } from "@/components/ui/glowing-effect"
 
@@ -8,6 +8,7 @@ const interviewTypes = ["Technical", "HR", "Behavioral"]
 
 export default function SettingsPage() {
   const { user } = useUser()
+  const { signOut } = useAuth()
   const navigate = useNavigate()
 
   const [defaultLevel, setDefaultLevel] = useState("Mid")
@@ -118,7 +119,7 @@ export default function SettingsPage() {
           ))}
         </nav>
 
-        <div className="mt-auto px-3">
+        <div className="mt-auto px-3 flex flex-col gap-2">
           <button
             onClick={() => navigate("/interview/new")}
             className="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-xl transition-all active:scale-95 flex items-center justify-center gap-2 text-sm"
@@ -255,6 +256,16 @@ export default function SettingsPage() {
               <span className="material-symbols-outlined text-sm">{saved ? "check_circle" : "save"}</span>
               {saved ? "Saved!" : "Save Preferences"}
             </button>
+
+            {/* Sign Out Button */}
+            <button
+              onClick={() => signOut(() => navigate("/"))}
+              className="mt-3 px-6 py-2.5 rounded-xl font-semibold text-sm transition-all active:scale-95 flex items-center gap-2 bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500/20"
+            >
+              <span className="material-symbols-outlined text-sm">logout</span>
+              Sign Out
+            </button>
+
           </div>
 
         </div>
